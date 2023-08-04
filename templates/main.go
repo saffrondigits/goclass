@@ -21,33 +21,10 @@ func main() {
 func handler(w http.ResponseWriter, r *http.Request) {
 	data := Person{
 		Name: "Gopher",
-		Age:  12,
+		Age:  20,
 	}
 
-	// HTML template with if-else condition to display personalized message
-	htmlTemplate := `
-		<!DOCTYPE html>
-		<html>
-		<head>
-			<title>Go Web Page</title>
-		</head>
-		<body>
-			{{if .Age}}
-				<h1>Hello, {{.Name}}!</h1>
-					{{if ge .Age 18}}
-						<p>You are an adult.</p>
-					{{else}}
-						<p>You are a minor.</p>
-					{{end}}
-			{{else}}
-				<p>Invalid age.</p>
-			{{end}}
-		</body>
-		</html>
-	`
-
-	// Parse the template
-	tmpl, err := template.New("example").Parse(htmlTemplate)
+	tmpl, err := template.ParseFiles("index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -59,4 +36,5 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 }

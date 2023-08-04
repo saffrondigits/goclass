@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Go Web Page</title>
+</head>
+<body>
+    {{if .Age}}
+    <h1>Hello, {{.Name}}!</h1>
+    {{if ge .Age 18}}
+    <p>You are an adult.</p>
+    {{else}}
+    <p>You are a minor.</p>
+    {{end}}
+    {{else}}
+    <p>Invalid age.</p>
+    {{end}}
+</body>
+</html>
