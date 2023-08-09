@@ -4,4 +4,5 @@ use (
 	./fibonacci
 	./webdev
 	./unit_testing
+	./auth
 )

@@ -5,17 +5,27 @@ import (
 	"time"
 )
 
-func Print1() {
-	fmt.Println("Routine 1")
+func sendData(ch chan int) {
+	for i := 0; i < 5; i++ {
+		fmt.Println("Sending: ", i)
+		ch <- i
+		time.Sleep(time.Second)
+	}
+
+	close(ch)
 }
 
-func Print2() {
-	fmt.Println("Routine 2")
+func receiveData(ch chan int) {
+	for data := range ch {
+		fmt.Println("Receiving: ", data)
+	}
 }
 
 func main() {
-	go Print1()
-	go Print2()
+	ch := make(chan int)
 
-	time.Sleep(time.Second * 1)
+	go receiveData(ch)
+	go sendData(ch)
+
+	time.Sleep(time.Second * 6)
 }
