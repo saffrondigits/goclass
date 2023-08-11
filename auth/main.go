@@ -23,7 +23,33 @@ func main() {
 }
 
 func loginHandler(c *gin.Context) {
+	var authReq models.AuthReq
 
+	err := c.BindJSON(&authReq)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "invalid request")
+		return
+	}
+
+	client, err := db.DBConn()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "db connection failed")
+		return
+	}
+
+	var dbUsername, dbPassword string
+	err = client.QueryRow("SELECT username, password from users WHERE username = $1", authReq.Username).Scan(&dbUsername, &dbPassword)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, "invalid credentials")
+		return
+	}
+
+	if dbPassword != authReq.Password {
+		c.JSON(http.StatusUnauthorized, "invalid credentials")
+		return
+	}
+
+	c.JSON(http.StatusOK, "Login successful")
 }
 
 func registerHandler(c *gin.Context) {
